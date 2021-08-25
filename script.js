@@ -41,9 +41,7 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-getSkuFromProductItem();
-
-function cartItemClickListener() {
+function cartItemClickListener(event) {
   // coloque seu código aqui
 }
 
@@ -54,5 +52,3 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
-
-createCartItemElement();
