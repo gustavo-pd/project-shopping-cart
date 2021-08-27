@@ -59,8 +59,7 @@ getEmptyButton.addEventListener('click', () => {
 const addToCart = async (ItemID) => {
   const itemCart = await fetch(`https://api.mercadolibre.com/items/${ItemID}`);
   const itemCartJson = await itemCart.json();
-  const getCartLocal = document.querySelector('.cart__items');
-    getCartLocal.appendChild(createCartItemElement(
+    getCart.appendChild(createCartItemElement(
       itemCartJson.id, itemCartJson.title, itemCartJson.price,
       ));
   summValorCart(itemCartJson.price);
