@@ -1,6 +1,7 @@
 const getTotalPrice = document.querySelector('.total-price');
 const getEmptyButton = document.getElementsByClassName('empty-cart')[0];
 const getCart = document.querySelector('.cart__items');
+const getCartAll = document.querySelectorAll('.cart__items');
 const removeLoadMsg = document.querySelector('.loading');
 let summValue = 0;
 
@@ -18,11 +19,16 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
+function saveStorage() {
+  localStorage.setItem('cartItems', getCart.innerHTML);
+}
+
 function summValorCart(itemPrice) {
   summValue += itemPrice;
   const summValueCor = parseFloat(summValue.toFixed(2));
   const summValue2 = Math.abs(summValueCor);
   getTotalPrice.innerHTML = summValue2;
+  saveStorage();
 }
 
 function cartItemClickListener(event) {
@@ -31,6 +37,7 @@ function cartItemClickListener(event) {
   const removePrice = textItem.slice(index + 1);
   summValorCart(-parseFloat(removePrice));
   event.target.remove();
+  saveStorage();
 }
 
 function createCartItemElement(sku, name, salePrice) {
@@ -38,6 +45,7 @@ function createCartItemElement(sku, name, salePrice) {
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
+  saveStorage();
   return li;
 }
 
@@ -45,6 +53,7 @@ getEmptyButton.addEventListener('click', () => {
   getCart.innerHTML = '';
   getTotalPrice.innerHTML = 0;
   summValue = 0;
+  saveStorage();
 });
 
 const addToCart = async (ItemID) => {
@@ -82,6 +91,12 @@ const createListML = async (toSearch) => {
 
 window.onload = () => {
   createListML('computador');
+  if (localStorage.length > 0) {
+    getCart.innerHTML = localStorage.getItem('cartItems');
+    getCartAll.forEach((item) => {
+    item.addEventListener('click', cartItemClickListener);
+    });
+  } 
 };
 
 function getSkuFromProductItem(item) {
